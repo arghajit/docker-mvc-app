@@ -1,0 +1,60 @@
+
+doctype html  
+html(lang='en')  
+  head
+    title new site
+    link(rel="stylesheet",type="text/css",href='static/css/style.css')
+    script(src='static/js/index.js')
+    script(src="https://fonts.googleapis.com/css?family=Source+Sans+Pro")
+    link(rel="stylesheet",type="text/css",href='https://use.fontawesome.com/releases/v5.3.1/css/all.css')
+    script(type="text/javascript",src="https://code.jquery.com/jquery-3.2.1.min.js")
+  body(onload='init()')
+    .mobile-only
+      h2
+        span.fas.fa-ban
+        span  Site is not optimized for mobile view. Test
+    .container
+      h2
+        span.fas.fa-concierge-bell
+        span  User Service Demo
+      .count
+        span#count 9
+        span  users
+      .card-stack#stack
+        .card
+          a(href='#') user
+        .card
+          a(href='#') user
+        .card
+          a(href='#') user
+        .card
+          a(href='#') user
+        .card.inactive
+          a(href='#') Add a User
+      .action
+        button Add User
+      //---------------
+
+      .details-stack
+        table
+          tr
+            td
+              span Name
+              input(value='john doe')
+          tr
+            td
+              span Email
+              input(type='email',value='jog@gmail.com')
+          tr
+            td
+              span Birthday
+              input(type='date')
+          tr
+            td(colspan='2')
+              span Address
+              input(value='44 north st')
+          tr
+            td(colspan='2')
+              button.primary#action Update
+              button.secondary(onClick="goback()") Go Back
+              button.secondary(onClick='#') Delete

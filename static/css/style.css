@@ -1,0 +1,145 @@
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
+@import url("https://use.fontawesome.com/releases/v5.3.1/css/all.css");
+* {
+  font-family: 'Source Sans Pro', sans-serif;
+  box-sizing: border-box; }
+
+body {
+  background-color: #FFF8F0; }
+
+.mobile-only {
+  display: none; }
+
+@media screen and (max-width: 500px) {
+  .container {
+    display: none; }
+  .mobile-only {
+    display: block; } }
+
+@media screen and (min-width: 501px) {
+  .container {
+    display: block; }
+  .mobile-only {
+    display: none; } }
+
+.container {
+  background: #FFF8F0;
+  top: 50%;
+  left: 50%;
+  width: 30em;
+  height: 18em;
+  margin-top: -9em;
+  margin-left: -15em;
+  border: 1px solid #392F5A;
+  background-color: #FFF8F0;
+  position: fixed;
+  border-radius: 0.5em;
+  padding: 10px;
+  box-shadow: 1px 7px 5px #ffc88a; }
+
+h2 {
+  color: #392F5A; }
+
+.card-stack {
+  display: none;
+  position: absolute;
+  top: 30%;
+  bottom: 5%;
+  left: 2%;
+  right: 2%;
+  overflow-y: scroll; }
+
+.card {
+  border-radius: 0.45em;
+  padding: 0.5em;
+  margin: 0.5em 0;
+  height: 2.5em;
+  line-height: 0em;
+  font-size: 100%;
+  background-color: #392F5A; }
+
+.card:not(.inactive) {
+  color: #FFF8F0; }
+  .card:not(.inactive):hover {
+    background-color: rgba(57, 47, 90, 0.6); }
+
+.inactive {
+  background-color: #FFF8F0;
+  border: 0.05em solid #392F5A;
+  color: #392F5A;
+  vertical-align: middle; }
+
+.card a {
+  text-decoration: none;
+  position: relative;
+  top: 40%;
+  color: #FFF8F0; }
+
+.card.inactive a {
+  color: #392F5A; }
+
+.count {
+  position: absolute;
+  top: 35px;
+  right: 15px; }
+
+.count #count {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: #392F5A;
+  color: #FFF8F0;
+  border-radius: 0.2em;
+  font-weight: bold;
+  text-align: center; }
+
+.details-stack {
+  display: none;
+  position: absolute;
+  top: 30%;
+  bottom: 5%;
+  left: 2%;
+  right: 2%; }
+  .details-stack span {
+    color: #392F5A; }
+
+table {
+  border: 0;
+  width: 100%; }
+
+tr {
+  height: 1em; }
+
+td {
+  width: 50%;
+  padding: .5em 0; }
+
+table input {
+  border: 0.05em solid #392F5A;
+  padding: 0 1em;
+  width: 80%;
+  position: absolute;
+  right: 0;
+  color: #392F5A;
+  background-color: #fff8f0;
+  line-height: 2em;
+  border-radius: 1em; }
+
+button {
+  height: 2em;
+  border-radius: 0.3em;
+  margin: 0 1em 0 0;
+  border: 0.05em solid #392F5A; }
+
+button.primary {
+  background-color: #392F5A;
+  color: #FFF8F0; }
+  button.primary:hover {
+    background-color: rgba(57, 47, 90, 0.7); }
+
+button.secondary {
+  background-color: #FFF8F0;
+  color: #392F5A; }
+  button.secondary:hover {
+    background-color: #392F5A;
+    color: #FFF8F0; }

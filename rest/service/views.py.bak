@@ -1,0 +1,84 @@
+from rest_framework import generics
+from .model import User
+from .serializers import UserSerializer
+from rest_framework.renderers import JSONRenderer
+from rest_framework.response import Response
+from rest_framework.views import APIView, View
+from django.http import JsonResponse
+
+
+# class UserAllView(generics.ListAPIView):
+#     """
+#     Provides a get method handler.
+#     """
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+
+from django.http import HttpResponse
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.forms import ModelForm
+
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['name', 'email', 'birthday','address']
+
+class UserList(ListView):
+    model = User
+
+    def get(self, *args, **kwargs):
+        users = User.objects.all().values()
+        content = {'users': users}
+        users1 = list(users)
+        # return Response(content)
+        return JsonResponse(users1,safe = False, status=200)
+
+    # def get(self,)
+
+class UserView(DetailView):
+    model = User
+    serializer_class = UserSerializer
+
+    def get(self, *args, **kwargs):
+        users = User.objects.filter(id=kwargs['pk'])
+        return JsonResponse(users, status=200)
+
+    def post(self,request):
+        print(request)
+        form = UserForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            data={}
+            data['message']='success'
+            return JsonResponse(data,status=200)
+
+class UserCreate(ListView):
+    model = User
+
+    def post(self,request):
+        print(request)
+        form = UserForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            data={}
+            response['message']='created'
+            return JsonResponse(response,status=201)
+
+
+class UserUpdate(UpdateView):
+    model = User
+    fields = ['name', 'email','birthday','address']
+    serializer_class = UserSerializer
+    # def post(self,*request)
+
+class UserDelete(DeleteView):
+    model = User
+    serializer_class = UserSerializer
+
+    def get(self,*args,**kwargs):
+        User.objects.filter(id=kwargs['pk']).delete()
+        response = {}
+        response['message']='deleted'
+        return JsonResponse(response,status=200)

@@ -1,0 +1,68 @@
+version: '3.6'
+
+services:
+  db:
+    container_name: db
+    restart: always
+    image: postgres:10.1-alpine
+    build: './db'
+    volumes:
+      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d/
+      - ./db/backup:/backup
+    ports:
+      - 5432:5432
+    expose:
+      - "5432"
+  rest:
+    container_name: rest
+    restart: always
+    build: './rest'
+    expose:
+      - "8000"
+    command: ls -l
+    command: python -version
+    command: python manage.py createsuperuser --username admin --password admin
+    command: python manage.py makemigrations
+    command: python manage.py migrate
+    command: ls -l
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
+    environment:
+      - SECRET_KEY=changemeinprod
+      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PORT=5432
+    depends_on:
+      - db
+  static:
+    container_name: static
+    build: './static'
+    command: ls -l
+    command: node -v
+    command: npm list --depth=0
+    command: npm install -g nodemon
+    command: node .
+    ports:
+      - 3000:3000
+    depends_on:
+      - rest
+      - db
+  flask:
+    container_name: flask
+    build: './flask'
+    command: pip install -r requirements.txt
+    command: ls -l
+    command: python app.py
+    volumes:
+      - ./flask:/app
+    expose:
+      - "8000"
+    ports:
+      - 8000:8000
+    environment:
+      - DB_HOST =
+      - DB_NAME =
+      - DB_PORT = s
+      - DB_USER =
+      - DB_PASS =

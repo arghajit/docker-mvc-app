@@ -1,0 +1,70 @@
+version: '3.6'
+
+services:
+  db:
+    container_name: db
+    restart: always
+    image: "postgres:10.1-alpine"
+    build: './db'
+    volumes:
+      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d/
+      - ./db/backup:/backup
+    ports:
+      - 5432:5432
+    expose:
+      - "5432"
+  static:
+    container_name: static
+    restart: always
+    build: './static'
+    command: ls -l
+    command: node -v
+    command: npm list --depth=0
+    command: npm install -g nodemon
+    command: node .
+    ports:
+      - 3000:3000
+    environment:
+      - HOST = '127.0.0.1'
+      - PORT = '3001'
+    depends_on:
+      - flask
+      - db
+  flask:
+    container_name: flask
+    restart: always
+    build: './flask'
+    command: pip install -r requirements.txt
+    # command: ls -l
+    # command: python import os
+    # command: python print(os.environ['DB_HOST'])
+    command: python app.py
+    volumes:
+      - ./flask:/app
+    expose:
+      - "8000"
+    ports:
+      - 8000:8000
+    environment:
+      - DB_HOST=${FLASK_DB_HOST}
+      - DB_NAME=${FLASK_DB_NAME}
+      - DB_PORT=${FLASK_DB_PORT}
+      - DB_USER=${FLASK_DB_USER}
+      - DB_PASS=${FLASK_DB_PASS}
+
+  api-tests:
+    container_name: api-tests
+    build: './api-tests'
+    command: ls -l
+    command: 'python -m http.server 3001 --bind 127.0.0.1'
+      # - ls -l
+      # - pwd
+      # - ./run.sh
+    # command: 'pwd'
+    volumes:
+      - .:/app
+    ports:
+      - 3001:3001
+    depends_on:
+      - db
+      - flask

@@ -1,0 +1,229 @@
+{
+	"info": {
+		"_postman_id": "87c75e00-dc85-4897-ba10-eb8590415eaf",
+		"name": "flask",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "[POST] Create new user 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "758b8f9f-8e43-452b-9f08-999c4d9805a1",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"User is Created\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201]);",
+							"    pm.response.to.have.status(\"Created\");",
+							"    pm.response.to.have.body(\"success\");",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"name\": \"{{name}}\",\n        \"birthday\": \"{{birthday}}\",\n        \"email\": \"{{email}}\",\n        \"address\": \"{{address}}\"\n}"
+				},
+				"url": {
+					"raw": "{{PROTOCOL}}://{{HOST}}:{{PORT}}{{PATH}}/new",
+					"protocol": "{{PROTOCOL}}",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT}}{{PATH}}",
+					"path": [
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[GET] Retrive all users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0c45b955-ef0d-4c2c-852f-51ef68b2a386",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Fetched users successfully\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+							"    pm.response.to.have.status(\"OK\");",
+							"    // pm.response.to.have.body(\"success\");",
+							"    // pm.response.to.have.body(\"response_body_string\");",
+							"    ",
+							"    // pm.expect(jsonData.length).to.eql(100);",
+							"});",
+							"",
+							"pm.test(\"Records are present in users list\", function() {",
+							"    ",
+							"    pm.expect(jsonData.length).to.be.above(3);",
+							"    // var jsonData = pm.response.json();",
+							"    // pm.expect()",
+							"})",
+							"",
+							"function convert_to_list(name,data) {",
+							"    var names=[]",
+							"    data.forEach(function(d){",
+							"        names.push(d.name)",
+							"    })",
+							"    return names;",
+							"}",
+							"",
+							"pm.test(\"Verify \" + data[1].name +\" is present from data file\", function() {",
+							"    jsonData.forEach(function(user){",
+							"        pm.expect(user.name).to.be.oneOf(convert_to_list(\"name\",data[1].name));",
+							"        ",
+							"        pm.expect(user.email).to.be.oneOf(covert_to_list(\"email\",data[1].email));",
+							"    })",
+							"    // pm.expect(jsonData.value)",
+							"    ",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/user/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[GET] Retrive Single user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/user/Harry_Osborn",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"Harry_Osborn"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PUT] Update a Record",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"name\": \"Harry Osborn\",\n        \"birthday\": \"1976-12-19\",\n        \"email\": \"harry.o@gmail.com\",\n        \"address\": \"5b CBD UK\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/user/Harry_Osborn",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"Harry_Osborn"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[DELETE] Delete a user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6c635cb7-bf01-4d44-8286-9e992f5b6949",
+						"type": "text/javascript",
+						"exec": [
+							"var response = pm.response.json();",
+							"",
+							"pm.test(\"User is Deleted\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([202]);",
+							"    pm.response.to.have.status(\"ACCEPTED\");",
+							"    pm.expect(response.message).to.eql(\"success\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/user/Luz_V_Ehrhardt",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"Luz_V_Ehrhardt"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
