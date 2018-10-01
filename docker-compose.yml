@@ -51,28 +51,18 @@ services:
       - DB_PORT=${FLASK_DB_PORT}
       - DB_USER=${FLASK_DB_USER}
       - DB_PASS=${FLASK_DB_PASS}
-
   api-tests:
     container_name: api-tests
     build: './api-tests'
     # command: ["npm","install","newman-reporter-html"]
-
     # command: []'npm install newman-reporter-html'
-    command: ["newman","run","flask.postman_collection.json", "-d", "testdata.json", "-e", "test.postman_environment.json", "-r", "html", "--reporter-html-export", "./index.html" ]
+    # command: newman -v
+    # command: ["newman","run","flask.postman_collection.json", "-d", "testdata.json", "-e", "test.postman_environment.json", "-r", "html", "--reporter-html-export", "./index.html" ]
+    # command: echo "executing newman"
     # command: 'newman run flask.postman_collection.json -d testdata.json -e test.postman_environment.json -r html --reporter-html-export ./index.html'
-    # command: 'python3 -m http.server 3001 --bind 127.0.0.1'
-    # command: 'cd report/'
-      # - "bash -c 'cd newman/'"
-      # - 'cd newman/'
-    command: 'python -m SimpleHTTPServer 3001 --bind 127.0.0.1'
-    # command: 'python -m SimpleHTTPServer 3001 --bind 127.0.0.1'
-    # command: 'pushd /path/you/want/to/serve; python -m SimpleHTTPServer 3001 --bind 127.0.0.1; popd'
-      # - ls -l
-      # - pwd
-      # - ./run.sh
-    # command: 'pwd'
+    command: ./run.sh
     volumes:
-      - ./api-tests:/app
+      - ./api-tests:/usr/src/app
     ports:
       - 3001:3001
     depends_on:
