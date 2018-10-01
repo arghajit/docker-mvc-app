@@ -1,6 +1,6 @@
-FROM mhart/alpine-node:10
+# ROM mhart/alpine-node:10
 
-# FROM library/bash
+FROM library/node:alpine
 
 WORKDIR /usr/src/app
 
@@ -17,11 +17,14 @@ RUN apk add --update \
 # RUN apk add python3 py-pi git
 # COPY package*.json ./
 COPY . .
-RUN npm install --save
+RUN npm install -g --no-save
 RUN ls -l
+RUN node -v
+RUN npm -v
+# RUN newman -v
 # RUN pwd
 # RUN npm install newman
-RUN node newman run flask.postman_collection.json -d testdata.json -e test.postman_environment.json -r html
+# RUN node newman run flask.postman_collection.json -d testdata.json -e test.postman_environment.json -r html
 
 
 EXPOSE 3001
