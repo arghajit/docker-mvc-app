@@ -9,8 +9,9 @@ WORKDIR /code
 
 # Install dependencies
 ADD requirements.txt /code/
-ADD . /code/
+# ADD . /code/
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 EXPOSE 8000
+# ENTRYPOINT['/bin/bash']

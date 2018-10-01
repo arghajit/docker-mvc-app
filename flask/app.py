@@ -2,7 +2,6 @@
 from flask import Flask,jsonify,make_response,Response,request,Response,json
 from model import Users
 from json import JSONEncoder
-# import serialize
 import datetime
 
 notfound = 404
@@ -13,7 +12,6 @@ accepted = 202
 
 response_success = {'message':'success'}
 response_failure = {'message':'failure'}
-# response_crea
 
 
 class MyEncoder(JSONEncoder):
@@ -87,23 +85,15 @@ def createUser():
     try:
         user.create(**request.json)
     except Exception as e:
-        # print("===========app.py/createUser===========")
         print(e)
         user.rollback()
         return response_failure, invalid
     return response_success, created
 
 #===========GET===========
-@app.route('/api/user/', methods=['GET'])
+@app.route('/api/user', methods=['GET'])
 def getAllUsers():
     user = Users()
-    # for user1 in user.retrive():
-        # users.append(user1)
-    # print("===========app.py/getAllusers===========")
-    # print(users)
-    # response = {}
-    # response['users']=users
-    # return users, ok;
     userlist = []
     for user1 in user.retrive():
         userlist.append(user1.__str__())
@@ -113,30 +103,14 @@ def getAllUsers():
 @app.route('/api/user/<string:name>', methods = ['GET'])
 def getUser(name):
     user = Users()
-    # print("===========app.py/getUser===========")
-    # print(user.retrive(name))
-    # if name in user.retrive():
-
-    # userlist=[]
     for user1 in user.retrive():
-        # userlist.append(user1)
         if name == user1.__repr__():
-            # print(user1)
             return user1.__str__(), ok
-    # response1 = {}
-    # response1['users']=users
-    # return users, ok;
-    # print(user.retrive())
-    #
-    #
-    message={}
-    message['message']='failure'
     return response_failure, invalid
 
 #===========UDPATE===========
 @app.route('/api/user/<string:key>', methods = ['PUT'])
 def updateUser(key):
-    # print("==========={0}".format(key))
     new = Users()
     data = request.json
     try:
@@ -145,7 +119,6 @@ def updateUser(key):
     except Exception as e:
         print(e)
     return response_failure, notfound
-
 
 #===========DELETE===========
 @app.route('/api/user/<string:pk>', methods = ['DELETE'])
@@ -161,7 +134,7 @@ def not_found(error):
 
 
 """
-MAIN - ENTRY POINT
+APP.MAIN
 """
 if __name__ == '__main__':
     app.run(port=8000, threaded=True, host=('0.0.0.0'), debug=True)

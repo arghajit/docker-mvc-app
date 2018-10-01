@@ -17,10 +17,10 @@ services:
     container_name: static
     restart: always
     build: './static'
-    command: ls -l
-    command: node -v
-    command: npm list --depth=0
-    command: npm install -g nodemon
+    # command: ls -l
+    # command: node -v
+    # command: npm list --depth=0
+    # command: npm install -g nodemon
     command: node .
     ports:
       - 3000:3000
@@ -34,13 +34,13 @@ services:
     container_name: flask
     restart: always
     build: './flask'
-    command: pip install -r requirements.txt
-    # command: ls -l
+    # command: pip install -r requirements.txt
+    # command: 'bash -c ls'
     # command: python import os
     # command: python print(os.environ['DB_HOST'])
-    command: python app.py
+    command: 'python ./app.py'
     volumes:
-      - ./flask:/app
+      - ./flask:/code
     expose:
       - "8000"
     ports:
@@ -51,18 +51,18 @@ services:
       - DB_PORT=${FLASK_DB_PORT}
       - DB_USER=${FLASK_DB_USER}
       - DB_PASS=${FLASK_DB_PASS}
-
   api-tests:
     container_name: api-tests
     build: './api-tests'
-    command: ls -l
-    command: 'python -m http.server 3001 --bind 127.0.0.1'
-      # - ls -l
-      # - pwd
-      # - ./run.sh
-    # command: 'pwd'
+    # command: ["npm","install","newman-reporter-html"]
+    # command: []'npm install newman-reporter-html'
+    # command: newman -v
+    # command: ["newman","run","flask.postman_collection.json", "-d", "testdata.json", "-e", "test.postman_environment.json", "-r", "html", "--reporter-html-export", "./index.html" ]
+    # command: echo "executing newman"
+    # command: 'newman run flask.postman_collection.json -d testdata.json -e test.postman_environment.json -r html --reporter-html-export ./index.html'
+    command: ./run.sh
     volumes:
-      - .:/app
+      - ./api-tests:/usr/src/app
     ports:
       - 3001:3001
     depends_on:
