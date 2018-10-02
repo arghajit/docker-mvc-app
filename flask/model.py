@@ -46,44 +46,21 @@ class Users(base):
     email = Column(String(50))
     address = Column(String(255))
 
-    # @declared_attr
-    # def users(cls):
-    #     return relationship('users')
 
-
-
-        #  parameretized constructor
-    # def __init__(self):
-        # self.name = kwargs.get('name')
-        # self.email = kwargs.get('email')
-        # self.address = kwargs.get('address')
-        # self.birthday = kwargs.get('birthday')
-
+    def __init__(self):
+        self.startengine()
 
     # def to_json(self):
     #     return {'name': self.name, 'birthday': self.birthday, 'address': self.address, 'email': self.email}
-    #
-    # @classmethod
-    # def from_json(cls, json):
-    #     return User(json['user'])
-    #
-    # title = Column(String, primary_key=True)
-    # director = Column(String)
-    # year = Column(String)
+
     def retrive(self,name=None):
         if name is None:
+            print('here')
             return session.query(Users).all()
 
         return session.query(Users) \
             .filter(Users.name == name.replace("_", " ")) \
             .first()
-
-
-        # print("===========models.py/retrieve===========")
-        # items = session.query(Users).filter_by(name = name.replace("_"," "))
-        # for item in items:
-        #     print(item)
-        # return items
 
     def create(self,**kwargs):
         self.name = kwargs.get('name')
@@ -93,17 +70,12 @@ class Users(base):
         session.add(self)
         session.commit()
         Users.__print("created",kwargs.get('name'))
-        # return True
 
     def updateDb(self,key,**user):
         if key is None:
-        # if len(args) < 1:
             return False
 
-        # print("==========={0}".format(arg[0]))
         pk1 = key.replace("_", " ")
-        # print("=key=========={0}".format(pk1))
-        # pk = pk1
         session.query(Users).filter(Users.name == pk1) \
                 .update({"name": user.get('name'), \
                         "email": user.get('email'), \
@@ -116,11 +88,8 @@ class Users(base):
         return True
 
     def delete(self,name):
-        # name = name.replace("_"," ")
         user = self.retrive(name)
         Users.__print("models.py","retrive")
-        # print(user)
-        # session.delete(user)
         session.query(Users) \
             .filter(Users.name == name.replace("_"," ")) \
             .delete(synchronize_session=False)
@@ -130,21 +99,7 @@ class Users(base):
 
     def rollback(self):
         session.rollback()
-# Read
-# films = session.query(Film)
-# for film in films:
-#     print(film.title)
-
-# Update
-# doctor_strange.title = "Some2016Film"
-# session.commit()
-
-
 
     @staticmethod
     def __print(type, value):
         print("==========={0} [{1}]===========".format(type,value))
-
-# Delete
-# session.delete(doctor_strange)
-# session.commit()

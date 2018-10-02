@@ -1,8 +1,7 @@
 #!flask/bin/python
-from flask import Flask,jsonify,make_response,Response,request,Response,json
+from flask import Flask,jsonify,make_response,Response,request,Response,json,send_from_directory
 from model import Users
 from json import JSONEncoder
-# import serialize
 import datetime
 
 notfound = 404
@@ -13,7 +12,6 @@ accepted = 202
 
 response_success = {'message':'success'}
 response_failure = {'message':'failure'}
-# response_crea
 
 
 class MyEncoder(JSONEncoder):
@@ -68,17 +66,17 @@ app = FlaskJSON(__name__)
 
 # app = Flask(__name__)
 
-#GENERIC ENDPOINT
-@app.route('/')
-def index():
-    return jsonify({'message':'hello world'})
-
 users=[]
 """
 --------------------------------------------
 REST ENDPOINTS ARE STARTING FROM HERE
 --------------------------------------------
 """
+#GENERIC ENDPOINT
+@app.route('/')
+def index():
+    return jsonify({'message':'hello world'})
+
 #===========POST===========
 @app.route('/api/user/new', methods=['POST'])
 def createUser():
@@ -87,23 +85,15 @@ def createUser():
     try:
         user.create(**request.json)
     except Exception as e:
-        # print("===========app.py/createUser===========")
         print(e)
         user.rollback()
         return response_failure, invalid
     return response_success, created
 
 #===========GET===========
-@app.route('/api/user/', methods=['GET'])
+@app.route('/api/user', methods=['GET'])
 def getAllUsers():
     user = Users()
-    # for user1 in user.retrive():
-        # users.append(user1)
-    # print("===========app.py/getAllusers===========")
-    # print(users)
-    # response = {}
-    # response['users']=users
-    # return users, ok;
     userlist = []
     for user1 in user.retrive():
         userlist.append(user1.__str__())
@@ -113,30 +103,14 @@ def getAllUsers():
 @app.route('/api/user/<string:name>', methods = ['GET'])
 def getUser(name):
     user = Users()
-    # print("===========app.py/getUser===========")
-    # print(user.retrive(name))
-    # if name in user.retrive():
-
-    # userlist=[]
     for user1 in user.retrive():
-        # userlist.append(user1)
         if name == user1.__repr__():
-            # print(user1)
             return user1.__str__(), ok
-    # response1 = {}
-    # response1['users']=users
-    # return users, ok;
-    # print(user.retrive())
-    #
-    #
-    message={}
-    message['message']='failure'
     return response_failure, invalid
 
 #===========UDPATE===========
 @app.route('/api/user/<string:key>', methods = ['PUT'])
 def updateUser(key):
-    # print("==========={0}".format(key))
     new = Users()
     data = request.json
     try:
@@ -145,7 +119,6 @@ def updateUser(key):
     except Exception as e:
         print(e)
     return response_failure, notfound
-
 
 #===========DELETE===========
 @app.route('/api/user/<string:pk>', methods = ['DELETE'])
@@ -157,11 +130,26 @@ def deleteUser(pk):
 #===========404===========
 @app.errorhandler(404)
 def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)
-
+    return make_response(jsonify({'error': '404 Not found'}), 404)
 
 """
-MAIN - ENTRY POINT
+--------------------------------------------
+STATIC FILES
+--------------------------------------------
+"""
+@app.route('/static/<path:path>', methods = ['GET'])
+def send_js(path):
+    print(path, file=sys.stdout)
+    return send_from_directory('./public', path)
+
+@app.route('/static/<string:mime>/<string:name>')
+def serve_static(mime, name):
+    return send_file('./static/{0}/{1}'.format(mime,name))
+
+"""
+--------------------------------------------
+APP MAIN
+--------------------------------------------
 """
 if __name__ == '__main__':
-    app.run(port=8000, threaded=True, host=('0.0.0.0'), debug=True)
+    app.run(port=8000, threaded=True, host=('0.0.0.0'), debug=False)

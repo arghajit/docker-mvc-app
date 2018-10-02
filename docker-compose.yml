@@ -17,16 +17,21 @@ services:
     container_name: static
     restart: always
     build: './static'
-    command: ls -l
-    command: node -v
-    command: npm list --depth=0
-    command: npm install -g nodemon
-    command: node .
+    # command: ls -l
+    # command: node -v
+    # command: npm list --depth=0
+    # command: npm install -g nodemon
+    # command: node .
+    # command: 'pug index.pug'
+    # command: 'node-sass scss/ css/'
+    command: 'nodemon ${NODE_HOST} ${NODE_PORT}'
     ports:
       - 3000:3000
     environment:
       - HOST = '127.0.0.1'
       - PORT = '3001'
+    volumes:
+      - ./static:/usr/src/app
     depends_on:
       - flask
       - db
@@ -34,32 +39,27 @@ services:
     container_name: flask
     restart: always
     build: './flask'
-    command: pip install -r requirements.txt
-    # command: ls -l
-    # command: python import os
-    # command: python print(os.environ['DB_HOST'])
-    command: python app.py
+    command: 'python ./app.py'
     volumes:
-      - ./flask:/app
+      - ./flask:/code
     expose:
       - "8000"
     ports:
       - 8000:8000
     environment:
-      - DB_HOST=${FLASK_DB_HOST}
-      - DB_NAME=${FLASK_DB_NAME}
-      - DB_PORT=${FLASK_DB_PORT}
-      - DB_USER=${FLASK_DB_USER}
-      - DB_PASS=${FLASK_DB_PASS}
+      # - DB_HOST=${FLASK_DB_HOST}
+      # - DB_NAME=${FLASK_DB_NAME}
+      # - DB_PORT=${FLASK_DB_PORT}
+      # - DB_USER=${FLASK_DB_USER}
+      # - DB_PASS=${FLASK_DB_PASS}
+      - DB_HOST=db
+      - DB_NAME=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASS=postgres
   api-tests:
     container_name: api-tests
     build: './api-tests'
-    # command: ["npm","install","newman-reporter-html"]
-    # command: []'npm install newman-reporter-html'
-    # command: newman -v
-    # command: ["newman","run","flask.postman_collection.json", "-d", "testdata.json", "-e", "test.postman_environment.json", "-r", "html", "--reporter-html-export", "./index.html" ]
-    # command: echo "executing newman"
-    # command: 'newman run flask.postman_collection.json -d testdata.json -e test.postman_environment.json -r html --reporter-html-export ./index.html'
     command: ./run.sh
     volumes:
       - ./api-tests:/usr/src/app

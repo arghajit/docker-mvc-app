@@ -1,1 +1,51 @@
-<!DOCTYPE html  ><html lang="en"> <head><title>new site</title><link rel="stylesheet" type="text/css" href="static/css/style.css"/><script src="static/js/index.js"></script><script src="https://fonts.googleapis.com/css?family=Source+Sans+Pro"></script><link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/><script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script></head><body onload="init()"><div class="mobile-only"><h2><span class="fas fa-ban"></span><span> Site is not optimized for mobile view. Test</span></h2></div><div class="container"><h2><span class="fas fa-concierge-bell"></span><span> User Service Demo</span></h2><div class="count"><span id="count">9</span><span> users</span></div><div class="card-stack" id="stack"><div class="card"><a href="#">user</a></div><div class="card"><a href="#">user</a></div><div class="card"><a href="#">user</a></div><div class="card"><a href="#">user</a></div><div class="card inactive"><a href="#">Add a User</a></div></div><div class="action"><button>Add User</button></div><div class="details-stack"><table><tr><td><span>Name</span><input value="john doe"/></td></tr><tr><td><span>Email</span><input type="email" value="jog@gmail.com"/></td></tr><tr><td><span>Birthday</span><input type="date"/></td></tr><tr><td colspan="2"><span>Address</span><input value="44 north st"/></td></tr><tr><td colspan="2"><button class="primary" id="action">Update</button><button class="secondary" onClick="goback()">Go Back</button><button class="secondary" onClick="#">Delete</button></td></tr></table></div></div></body></html>
+<!DOCTYPE html  >
+<html lang="en">
+
+<head>
+  <title>new site 12</title>
+  <meta name="viewport" http-equiv="Content-Type" content="text/html, charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="static/css/style.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans" />
+  <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" />
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="static/js/index.js"></script>
+</head>
+
+<body onload="initPage();">
+  <div class="mobile-only">
+    <h2><span class="fas fa-ban"></span><span> Site is not optimized for mobile view. Test</span></h2>
+  </div>
+  <div class="container">
+    <h2><span class="fas fa-concierge-bell"></span><span> User Service Demo1</span></h2>
+    <div class="count"><span id="count">9</span><span> users</span></div>
+    <div class="card-stack" id="stack">
+      <div class="card"><a href="#">user</a></div>
+      <div class="card"><a href="#">user</a></div>
+      <div class="card"><a href="#">user</a></div>
+      <div class="card"><a href="#">user</a></div>
+      <div class="card inactive"><a href="#">Add a User</a></div>
+    </div>
+    <div class="action"><button>Add User</button></div>
+    <div class="details-stack">
+      <table id="user-table">
+        <tr>
+          <td><span>Name</span><input value="john doe" /></td>
+        </tr>
+        <tr>
+          <td><span>Email</span><input type="email" value="jog@gmail.com" /></td>
+        </tr>
+        <tr>
+          <td><span>Birthday</span><input type="date" /></td>
+        </tr>
+        <tr>
+          <td colspan="2"><span>Address</span><input value="44 north st" /></td>
+        </tr>
+        <tr>
+          <td colspan="2"><button class="primary" id="action">Update</button><button class="secondary" onClick="goback()">Go Back</button><button class="secondary" onClick="#">Delete</button></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="static/js/index.js"></script>
+</html>

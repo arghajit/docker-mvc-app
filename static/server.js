@@ -13,6 +13,10 @@ app.get('/', function(request, response) {
 	response.sendFile(__dirname + '/index.html');
 });
 
+app.get('/index.html', function(request, response) {
+	response.sendFile(__dirname + '/index.html');
+});
+
 app.get('*', function(request, response) {
 	response.send('Not Found',404);
 });

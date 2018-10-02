@@ -1,14 +1,19 @@
 FROM mhart/alpine-node:10
+# FROM library/alpine
+# FROM library/node:alpine
+
 WORKDIR /usr/src/app
-COPY package*.json ./
-# RUN ls -l
-# RUN cat package.json
+
+# RUN apk add --no-cache mysql-client
+# RUN rm -rf /usr/lib/node_modules
+RUN apk add --update sudo nodejs nodejs-npm
+# RUN npm install npm@latest -g
 RUN npm config set package-lock false
-RUN npm install -g
-# RUN npm install
-# RUN npm-install-all
-RUN apk add python3 py-pi
+RUN npm install -g nodemon --save-prod
+# RUN npm install -g nodemon node-sass pug --unsafe-perm=true --allow-root
+
+
+
 COPY . .
-# RUN ls -l
-# RUN pwd
-EXPOSE 3000
+
+EXPOSE 3001

@@ -1,14 +1,15 @@
-
 doctype html  
 html(lang='en')  
   head
-    title new site
-    link(rel="stylesheet",type="text/css",href='static/css/style.css')
-    script(src='static/js/index.js')
-    script(src="https://fonts.googleapis.com/css?family=Source+Sans+Pro")
-    link(rel="stylesheet",type="text/css",href='https://use.fontawesome.com/releases/v5.3.1/css/all.css')
+    title new site 12
+    meta(name="viewport",http-equiv="Content-Type",content="text/html, charset=utf-8")
+    link(rel="stylesheet",type="text/css", href='static/css/style.css')
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Noto+Sans")
+    link(rel="stylesheet", type="text/css", href='https://use.fontawesome.com/releases/v5.3.1/css/all.css')
     script(type="text/javascript",src="https://code.jquery.com/jquery-3.2.1.min.js")
-  body(onload='init()')
+    script(type="text/javascript",src='static/js/index.js')
+    
+  body(onload='initPage()')
     .mobile-only
       h2
         span.fas.fa-ban
@@ -16,7 +17,7 @@ html(lang='en')
     .container
       h2
         span.fas.fa-concierge-bell
-        span  User Service Demo
+        span  User Service Demo1
       .count
         span#count 9
         span  users
