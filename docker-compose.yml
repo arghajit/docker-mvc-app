@@ -63,11 +63,13 @@ services:
     container_name: selenium
     build: './ui-tests'
     # command: 'behave'
-    command: 'behave -f allure_behave.formatter:AllureFormatter -o ./reports ./features'
+    command: 'behave -f allure_behave.formatter:AllureFormatter -o . ./features'
+    command: 'python -m SimpleHTTPServer 3002 --bind 127.0.0.1'
     volumes:
       - ./ui-tests:/code
     ports:
       - 4444:4444
+      - 3002:3002
     depends_on:
       - flask
       - db1
