@@ -46,19 +46,6 @@ services:
       - db1
       - flask
 
-  static:
-    container_name: static
-    restart: always
-    build: './static'
-    command: 'nodemon 127.0.0.1 3000'
-    ports:
-      - 3000:3000
-    volumes:
-      - ./static:/usr/src/app
-    depends_on:
-      - db1
-      - flask
-
   selenium:
     container_name: selenium
     build: './ui-tests'
