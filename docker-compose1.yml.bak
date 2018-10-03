@@ -1,0 +1,83 @@
+version: '3.6'
+
+services:
+  db1:
+    container_name: db1
+    restart: always
+    image: "postgres:10.1-alpine"
+    volumes:
+      - ./db/postgres/log:/var/log/postgresql
+      - ./db/postgres/backup:/backup
+      - ./db/postgres/conf:/etc/postgresql/
+    ports:
+      - 5432:5432
+    expose:
+      - "5432"
+  db:
+    container_name: db
+    restart: always
+    image: "postgres:10.1-alpine"
+    build: './db'
+    volumes:
+      # - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d/
+      - ./db/backup:/backup
+      # - ./db/postgres:/var/lib/postgresql
+    ports:
+      - 5432:5432
+    expose:
+      - "5432"
+  static:
+    container_name: static
+    restart: always
+    build: './static'
+    # command: ls -l
+    # command: node -v
+    # command: npm list --depth=0
+    # command: npm install -g nodemon
+    # command: node .
+    # command: 'pug index.pug'
+    # command: 'node-sass scss/ css/'
+    command: 'nodemon ${NODE_HOST} ${NODE_PORT}'
+    ports:
+      - 3000:3000
+    # environment:
+      # - HOST = '127.0.0.1'
+      # - PORT = '3001'
+    volumes:
+      - ./static:/usr/src/app
+    depends_on:
+      - db1
+      - flask
+  flask:
+    container_name: flask
+    restart: always
+    build: './flask'
+    command: 'python ./app.py'
+    volumes:
+      - ./flask:/code
+    expose:
+      - "8000"
+    ports:
+      - 8000:8000
+    environment:
+      # - DB_HOST=${FLASK_DB_HOST}
+      # - DB_NAME=${FLASK_DB_NAME}
+      # - DB_PORT=${FLASK_DB_PORT}
+      # - DB_USER=${FLASK_DB_USER}
+      # - DB_PASS=${FLASK_DB_PASS}
+      - DB_HOST=db
+      - DB_NAME=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASS=postgres
+  api-tests:
+    container_name: api-tests
+    build: './api-tests'
+    command: ./run.sh
+    volumes:
+      - ./api-tests:/usr/src/app
+    ports:
+      - 3001:3001
+    depends_on:
+      - db1
+      - flask

@@ -42,17 +42,17 @@ h2 {
 
 .error{
   display: none;
-  border-radius: 0.45em;
-  padding: 0.5em;
-  margin: 0.5em 0;
-  height: 2.5em;
-  line-height: 0em;
-  font-size: 100%;
-  background-color: #392F5A;
+  /* border-radius: 0.45em; */
+  /* padding: 0.5em; */
+  margin: auto;
+  /* height: 2.5em; */
+  /* line-height: 0em; */
+  /* font-size: 100%; */
+  /* background-color: #392F5A; */
 }
 
 .card-stack {
-  display: none;
+  /* display: none; */
   position: absolute;
   top: 30%;
   bottom: 5%;
@@ -104,10 +104,12 @@ h2 {
   font-weight: bold;
   text-align: center; }
 
-.action button {
-  postion: absolute;
-  bottom: 20px;
-  left: 20px;
+button.action  {
+  postion: relative;
+  /* bottom: 20px; */
+  /* left: 20px */
+  top: 25px;
+  /* margin: 0 0 20px 0; */
 }
 
 .details-stack {

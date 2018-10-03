@@ -4,6 +4,7 @@ from model import Users
 from json import JSONEncoder
 import datetime
 
+
 notfound = 404
 invalid = 403
 ok = 200
@@ -13,11 +14,9 @@ accepted = 202
 response_success = {'message':'success'}
 response_failure = {'message':'failure'}
 
-
 class MyEncoder(JSONEncoder):
     def default(self, o):
         return o.__dict__
-
 
 class ResponseJSON(Response):
     """Extend flask.Response with support for list/dict conversion to JSON."""
@@ -61,9 +60,7 @@ class FlaskJSON(Flask):
     """Extension of standard Flask app with custom response class."""
     response_class = ResponseJSON
 
-
 app = FlaskJSON(__name__)
-
 # app = Flask(__name__)
 
 users=[]
@@ -73,9 +70,9 @@ REST ENDPOINTS ARE STARTING FROM HERE
 --------------------------------------------
 """
 #GENERIC ENDPOINT
-@app.route('/')
-def index():
-    return jsonify({'message':'hello world'})
+# @app.route('/')
+# def index():
+#     return jsonify({'message':'hello world'})
 
 #===========POST===========
 @app.route('/api/user/new', methods=['POST'])
@@ -127,25 +124,41 @@ def deleteUser(pk):
     new.delete(pk)
     return response_success, accepted
 
+"""
+--------------------------------------------
+STATIC FILES -- WORKAROUND
+--------------------------------------------
+"""
+@app.route('/')
+def index():
+    return send_from_directory('./public', 'index.html')
+# @app.route('/static/<path:path>',defaults={'path': ''}, methods = ['GET'])
+# def send_js(path):
+#     return jsonify({'path': path}), 202
+
+# @app.route('/static/', defaults={'path': ''})
+# @app.route('/static/<path:path>')
+# def catch_all(path):
+#     return 'You want path: %s' % path
+
+@app.route('/static/<subdir>/<path:filename>/')
+def static_subdir(subdir=None, filename=None):
+    return send_from_directory('./public', subdir+'/'+filename)
+    # return 'subdir: {} file: {}'.format(subdir, filename)
+
 #===========404===========
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': '404 Not found'}), 404)
 
-"""
---------------------------------------------
-STATIC FILES
---------------------------------------------
-"""
-@app.route('/static/<path:path>', methods = ['GET'])
-def send_js(path):
-    print(path, file=sys.stdout)
-    return send_from_directory('./public', path)
 
-@app.route('/static/<string:mime>/<string:name>')
-def serve_static(mime, name):
-    return send_file('./static/{0}/{1}'.format(mime,name))
-
+    # print(path, file=sys.stdout)
+    # return send_from_directory('./public', path)
+#
+# @app.route('/static/<string:mime>/<string:name>')
+# def serve_static(mime, name):
+#     return send_file('./static/{0}/{1}'.format(mime,name))
+#
 """
 --------------------------------------------
 APP MAIN
