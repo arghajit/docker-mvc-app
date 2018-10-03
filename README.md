@@ -1,7 +1,7 @@
 # docker-mvc-app
 ### A sample project showcasing a multi containers application with REST backend running model-view and Responsive UI in front end running with api and ui level tests. All of these from a single docker-compose file.
 
-### 1.1 applications
+### 1.1. About
 Once started, multiple containers holding different docker images 
 - serves a `user` model with RESTful APIs
 - an `orm` associated with model stores data in db
@@ -10,19 +10,19 @@ Once started, multiple containers holding different docker images
 - An test collection to test API endpoints run after db and backend boots up
 - A simplest selenium framework testing UI with `BDD` style tests cases.
 
-All of the contianers runs independently. All codes are added into docker contianers as `volume`. So one can update the code directly and see it in effect. Dependeing upon tech stack, you may need to restart a single contianer to reflect the cahnges.
+All of the contianers runs independently. All codes are added into docker contianers as `volume`. One can restart a single container independently to keepSo one can update the code directly and see it in effect. Dependeing upon tech stack, you may need to restart a single contianer to reflect the changes.
 
-### 1.2 Run
+### 1.2. Run
 Lorem ipsum dolor sit amet consectetur adipiscing elit, semper nam justo sapien cum duis penatibus, egestas cubilia senectus parturient pellentesque praesent. Quisque leo fusce aptent maecenas diam pulvinar litora, natoque montes vulputate sem cursus iaculis, tristique habitant ut ullamcorper taciti pharetra. Accumsan feugiat praesent class bibendum curae curabitur morbi lacinia convallis montes auctor velit, volutpat integer et gravida odio eget turpis tempor per fames vestibulum.
-#### 1.2.1 Take a pull of this repository
+#### 1.2.1. Take a pull of this repository
 ```git
 Arghajit@mac$ git clone https://github.com/arghajit/docker-mvc-app.git
 ```
-#### 1.2.2 Build all of the containers
+#### 1.2.2. Build all of the containers
 ```docker
 Arghajit@mac$ docker-compose build
 ```
-#### 1.2.3 Run the containers. 
+#### 1.2.3. Run the containers. 
 ```sh
 Arghajit@mac$ docker-compose up -d
 ```
@@ -31,36 +31,54 @@ In few seconds you start seeing all of the containers being up and running.
 Arghajit@mac$ docker ps
 xxxx
 ```
-### 1.3 Structure
-Lorem ipsum dolor sit amet consectetur adipiscing elit, semper nam justo sapien cum duis penatibus, egestas cubilia senectus parturient pellentesque praesent. Quisque leo fusce aptent maecenas diam pulvinar litora, natoque montes vulputate sem cursus iaculis, tristique habitant ut ullamcorper taciti pharetra. Accumsan feugiat praesent class bibendum curae curabitur morbi lacinia convallis montes auctor velit, volutpat integer et gravida odio eget turpis tempor per fames vestibulum.
-```
-ports are in use: xxx
-````
-#### 1.3.1 Database (`postgres`)
+### 1.3. Structure
+Structure is build with a `bottom-up` approch where modules are built one by one. All modules holds there required packages/modules inside it. 
+#### 1.3.1. Database (`postgres`)
 A simple `XXX` base image is being used with out any build step (`Dockerfile` is there; not in use). Currently the application uses the default `postgres@postgres` table schema and create model table there. This is entry point of our application which kicks off first.
 ```sh
 port in use: 5432
 ````
-#### 1.3.2 RESTful API (`flask`)
+#### 1.3.2. RESTful API (`flask`)
+`flask` is minimal web framework build with `python`. It offers minimal setup to kick off a backend service. An mdoel `user` being served which is binding with a orm `SQLAlchemy`. Currently it points to `postgres` db hosted in the container. 
+**Following are the endpoints of user service**
+```sh
+GET /api/user                       # produce JSON, SUCCESS CODE 200
+GET /api/user/<string:name>         # produce JSON, SUCCESS CODE 200
+POST /api/user/new                  # consume JSON, produce JSON, SUCCESS CODE 201
+PUT /api/user/<string:name>         # consume JSON, produce JSON, SUCCESS CODE 202
+DELETE /api/user/<string:name>      # produce JSON, SUCCESS CODE 202 
+```
+An **user** can be explained like this:
+```json
+{
+   "name": "Justin S Weber",
+   "birthday": "5/30/1990",
+   "address": "3977 Court Street",
+   "email": "justin@google.com"
+ }
+```
+To keep things minimal currently no such `composite key` for this `user` model. Thus `name` was made unique and hence `<string:name>` uses *slug* value of the names.
+```yml
+    GET /api/user/Juntin_S_Weber
+```
+```yml
+port in use: 8000
+````
+#### 1.3.3. Static (`pure css-html-js`)
+Lorem ipsum dolor sit amet consectetur adipiscing elit, semper nam justo sapien cum duis penatibus, egestas cubilia senectus parturient pellentesque praesent. Quisque leo fusce aptent maecenas diam pulvinar litora, natoque montes vulputate sem cursus iaculis, tristique habitant ut ullamcorper taciti pharetra. Accumsan feugiat praesent class bibendum curae curabitur morbi lacinia convallis montes auctor velit, volutpat integer et gravida odio eget turpis tempor per fames vestibulum.
+```yml
+port in use: 8000
+````
+#### 1.3.4. API Testing (`newman-postman collection`)
 Lorem ipsum dolor sit amet consectetur adipiscing elit, semper nam justo sapien cum duis penatibus, egestas cubilia senectus parturient pellentesque praesent. Quisque leo fusce aptent maecenas diam pulvinar litora, natoque montes vulputate sem cursus iaculis, tristique habitant ut ullamcorper taciti pharetra. Accumsan feugiat praesent class bibendum curae curabitur morbi lacinia convallis montes auctor velit, volutpat integer et gravida odio eget turpis tempor per fames vestibulum.
 ```
 port in use: xxx
 ````
-#### 1.3.3 Static (`pure css-html-js`)
+#### 1.3.5. UI Testing (`python-selenium-behave`)
 Lorem ipsum dolor sit amet consectetur adipiscing elit, semper nam justo sapien cum duis penatibus, egestas cubilia senectus parturient pellentesque praesent. Quisque leo fusce aptent maecenas diam pulvinar litora, natoque montes vulputate sem cursus iaculis, tristique habitant ut ullamcorper taciti pharetra. Accumsan feugiat praesent class bibendum curae curabitur morbi lacinia convallis montes auctor velit, volutpat integer et gravida odio eget turpis tempor per fames vestibulum.
-```
-port in use: xxx
-````
-#### 1.3.4 API Testing (`newman-postman collection`)
+### 1.4. Flow
 Lorem ipsum dolor sit amet consectetur adipiscing elit, semper nam justo sapien cum duis penatibus, egestas cubilia senectus parturient pellentesque praesent. Quisque leo fusce aptent maecenas diam pulvinar litora, natoque montes vulputate sem cursus iaculis, tristique habitant ut ullamcorper taciti pharetra. Accumsan feugiat praesent class bibendum curae curabitur morbi lacinia convallis montes auctor velit, volutpat integer et gravida odio eget turpis tempor per fames vestibulum.
-```
-port in use: xxx
-````
-#### 1.3.5 UI Testing (`python-selenium-behave`)
-Lorem ipsum dolor sit amet consectetur adipiscing elit, semper nam justo sapien cum duis penatibus, egestas cubilia senectus parturient pellentesque praesent. Quisque leo fusce aptent maecenas diam pulvinar litora, natoque montes vulputate sem cursus iaculis, tristique habitant ut ullamcorper taciti pharetra. Accumsan feugiat praesent class bibendum curae curabitur morbi lacinia convallis montes auctor velit, volutpat integer et gravida odio eget turpis tempor per fames vestibulum.
-### 1.4 Flow
-Lorem ipsum dolor sit amet consectetur adipiscing elit, semper nam justo sapien cum duis penatibus, egestas cubilia senectus parturient pellentesque praesent. Quisque leo fusce aptent maecenas diam pulvinar litora, natoque montes vulputate sem cursus iaculis, tristique habitant ut ullamcorper taciti pharetra. Accumsan feugiat praesent class bibendum curae curabitur morbi lacinia convallis montes auctor velit, volutpat integer et gravida odio eget turpis tempor per fames vestibulum.
-### 1.5 Complete `Docker-compose.yml`
+### 1.5. Complete `Docker-compose.yml`
 ```yml
 version: '3.6'
 
