@@ -21,8 +21,6 @@ services:
     command: 'python ./app.py'
     volumes:
       - ./flask:/code
-    expose:
-      - "8000"
     ports:
       - 8000:8000
     environment:
@@ -42,6 +40,10 @@ services:
       - ./api-tests:/usr/src/app
     ports:
       - 3001:3001
+    expose:
+      - 8000
+    links:
+      - flask
     depends_on:
       - db1
       - flask
@@ -49,9 +51,8 @@ services:
   selenium:
     container_name: selenium
     build: './ui-tests'
-    # command: 'behave'
     command: 'behave -f allure_behave.formatter:AllureFormatter -o . ./features'
-    command: 'python -m SimpleHTTPServer 3002 --bind 127.0.0.1'
+    command: 'SimpleHTTPServer 3002 --bind 127.0.0.1'
     volumes:
       - ./ui-tests:/code
     ports:

@@ -1,20 +1,23 @@
 [
- {
-   "name": "Luz V Ehrhardt",
-   "birthday": "10/6/1987",
-   "address": "618 Harley Brook Lane",
-   "email": " lv@gmail.com"
- },
- {
-   "name": "Justin S Weber",
-   "birthday": "5/30/1990",
-   "address": "3977 Court Street",
-   "email": "justin@google.com"
- },
- {
-   "name": "Joshua C Lee",
-   "birthday": "6/21/1950",
-   "address": "4408 Derek Drive",
-   "email": "lee@hotmail.com"
- }
+  {
+    "slug": "Samir_Roy",
+    "name": "Samir Roy",
+    "birthday": "1990-12-12",
+    "email": "samir@gmail.com",
+    "address": "93 New Delhi I"
+  },
+  {
+    "slug": "Jerome_M_Hernandez",
+    "name": "Jerome M Hernandez",
+    "birthday": "1971-09-14",
+    "email": "jerome@hotmail.com",
+    "address": "366 Eagle Drive US"
+  },
+  {
+    "slug": "Marianne_J_Bulter",
+    "name": "Marianne J Bulter",
+    "birthday": "1984-02-24",
+    "email": "mari@gmail.com",
+    "address": "3414 Hazelwood Avenue"
+  }
 ]

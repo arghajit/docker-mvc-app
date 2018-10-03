@@ -10,4 +10,4 @@ RUN npm install -g newman newman-reporter-html
 
 COPY . .
 
-EXPOSE 3001
+EXPOSE 3001, 8000

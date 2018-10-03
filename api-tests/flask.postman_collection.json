@@ -6,20 +6,30 @@
 	},
 	"item": [
 		{
-			"name": "[POST] Create new user 1",
+			"name": "[POST] Create new user",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "758b8f9f-8e43-452b-9f08-999c4d9805a1",
+						"id": "82a5779a-eefb-4627-aa3a-e568bd930ab9",
 						"type": "text/javascript",
 						"exec": [
-							"pm.test(\"User is Created\", function () {",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"User is Created successfully\", function () {",
 							"    pm.expect(pm.response.code).to.be.oneOf([201]);",
-							"    pm.response.to.have.status(\"Created\");",
-							"    pm.response.to.have.body(\"success\");",
+							"    pm.response.to.have.status(\"CREATED\");",
+							"    pm.expect(jsonData.message).to.eq('success');",
 							"});",
-							""
+							"",
+							"",
+							"",
+							"// {",
+							"//         \"name\": \"Harry Meta\",",
+							"//         \"birthday\": \"2001-12-12\",",
+							"//         \"email\": \"aksdhkajsd@gash.com\",",
+							"//         \"address\": \"982 Tokyo\"",
+							"// }"
 						]
 					}
 				}
@@ -34,7 +44,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n        \"name\": \"{{name}}\",\n        \"birthday\": \"{{birthday}}\",\n        \"email\": \"{{email}}\",\n        \"address\": \"{{address}}\"\n}"
+					"raw": "{\n        \"name\": \"{{name}}\",\n        \"birthday\": \"{{birthday}}\",\n        \"email\": \"{{email}}\",\n        \"address\": \"{{address}}\"\n}\n"
 				},
 				"url": {
 					"raw": "{{PROTOCOL}}://{{HOST}}:{{PORT}}{{PATH}}/new",
@@ -56,7 +66,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "0c45b955-ef0d-4c2c-852f-51ef68b2a386",
+						"id": "152b1254-e740-4586-b80d-79b47b3a2bb9",
 						"type": "text/javascript",
 						"exec": [
 							"var jsonData = pm.response.json();",
@@ -64,36 +74,11 @@
 							"pm.test(\"Fetched users successfully\", function () {",
 							"    pm.expect(pm.response.code).to.be.oneOf([200]);",
 							"    pm.response.to.have.status(\"OK\");",
-							"    // pm.response.to.have.body(\"success\");",
-							"    // pm.response.to.have.body(\"response_body_string\");",
-							"    ",
-							"    // pm.expect(jsonData.length).to.eql(100);",
 							"});",
 							"",
 							"pm.test(\"Records are present in users list\", function() {",
-							"    ",
-							"    pm.expect(jsonData.length).to.be.above(3);",
-							"    // var jsonData = pm.response.json();",
-							"    // pm.expect()",
-							"})",
-							"",
-							"function convert_to_list(name,data) {",
-							"    var names=[]",
-							"    data.forEach(function(d){",
-							"        names.push(d.name)",
-							"    })",
-							"    return names;",
-							"}",
-							"",
-							"pm.test(\"Verify \" + data[1].name +\" is present from data file\", function() {",
-							"    jsonData.forEach(function(user){",
-							"        pm.expect(user.name).to.be.oneOf(convert_to_list(\"name\",data[1].name));",
-							"        ",
-							"        pm.expect(user.email).to.be.oneOf(covert_to_list(\"email\",data[1].email));",
-							"    })",
-							"    // pm.expect(jsonData.value)",
-							"    ",
-							"})"
+							"    pm.expect(jsonData.length).to.be.above(0);",
+							"});"
 						]
 					}
 				}
@@ -103,51 +88,36 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/user/",
-					"protocol": "http",
+					"raw": "{{PROTOCOL}}://{{HOST}}:{{PORT}}{{PATH}}",
+					"protocol": "{{PROTOCOL}}",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{HOST}}"
 					],
-					"port": "8000",
-					"path": [
-						"api",
-						"user",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "[GET] Retrive Single user",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/user/Harry_Osborn",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"user",
-						"Harry_Osborn"
-					]
+					"port": "{{PORT}}{{PATH}}"
 				}
 			},
 			"response": []
 		},
 		{
 			"name": "[PUT] Update a Record",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b627d449-d35c-4df8-947f-972797fb1846",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"User updated successfully\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([202]);",
+							"    pm.response.to.have.status(\"ACCEPTED\");",
+							"    pm.expect(jsonData.message).to.eq('success');",
+							"});"
+						]
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [
@@ -158,22 +128,58 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n        \"name\": \"Harry Osborn\",\n        \"birthday\": \"1976-12-19\",\n        \"email\": \"harry.o@gmail.com\",\n        \"address\": \"5b CBD UK\"\n}"
+					"raw": "{\n        \"name\": \"{{name}}\",\n        \"birthday\": \"{{birthday}}\",\n        \"email\": \"{{email}}\",\n        \"address\": \"HOLLYWOOD\"\n}\n"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/user/Harry_Osborn",
-					"protocol": "http",
+					"raw": "{{PROTOCOL}}://{{HOST}}:{{PORT}}{{PATH}}/{{slug}}",
+					"protocol": "{{PROTOCOL}}",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{HOST}}"
 					],
-					"port": "8000",
+					"port": "{{PORT}}{{PATH}}",
 					"path": [
-						"api",
-						"user",
-						"Harry_Osborn"
+						"{{slug}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[GET] Retrive Single user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c23a4901-5d02-42c2-98c0-635c1e928913",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Fetched user successfully\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"pm.test(\"Verify user data\", function () {",
+							"    pm.expect(jsonData.address).to.eq('HOLLYWOOD');",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{PROTOCOL}}://{{HOST}}:{{PORT}}{{PATH}}/{{slug}}",
+					"protocol": "{{PROTOCOL}}",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT}}{{PATH}}",
+					"path": [
+						"{{slug}}"
 					]
 				}
 			},
@@ -207,19 +213,14 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/user/Luz_V_Ehrhardt",
-					"protocol": "http",
+					"raw": "{{PROTOCOL}}://{{HOST}}:{{PORT}}{{PATH}}/{{slug}}",
+					"protocol": "{{PROTOCOL}}",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{HOST}}"
 					],
-					"port": "8000",
+					"port": "{{PORT}}{{PATH}}",
 					"path": [
-						"api",
-						"user",
-						"Luz_V_Ehrhardt"
+						"{{slug}}"
 					]
 				}
 			},
