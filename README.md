@@ -13,7 +13,6 @@ Once started, multiple containers holding different docker images
 All of the contianers runs independently. All codes are added into docker contianers as `volume`. One can restart a single container independently to keepSo one can update the code directly and see it in effect. Dependeing upon tech stack, you may need to restart a single contianer to reflect the changes.
 
 ### 1.2. Run
-Lorem ipsum dolor sit amet consectetur adipiscing elit, semper nam justo sapien cum duis penatibus, egestas cubilia senectus parturient pellentesque praesent. Quisque leo fusce aptent maecenas diam pulvinar litora, natoque montes vulputate sem cursus iaculis, tristique habitant ut ullamcorper taciti pharetra. Accumsan feugiat praesent class bibendum curae curabitur morbi lacinia convallis montes auctor velit, volutpat integer et gravida odio eget turpis tempor per fames vestibulum.
 #### 1.2.1. Take a pull of this repository
 ```git
 Arghajit@mac$ git clone https://github.com/arghajit/docker-mvc-app.git
@@ -27,17 +26,38 @@ Arghajit@mac$ docker-compose build
 Arghajit@mac$ docker-compose up -d
 ```
 In few seconds you start seeing all of the containers being up and running.
-```
+```sh
 Arghajit@mac$ docker ps
-xxxx
+CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                    NAMES
+a0c5655bf9ad        docker-mvc-app_api-tests   "./run.sh"               10 seconds ago      Up 10 seconds       0.0.0.0:3001->3001/tcp   api-tests
+cceec3f80d66        docker-mvc-app_flask       "python ./app.py"        12 seconds ago      Up 8 seconds        0.0.0.0:8000->8000/tcp   flask
+c1e5b0b44bb7        postgres:10.1-alpine       "docker-entrypoint.s…"   13 seconds ago      Up 13 seconds       0.0.0.0:5432->5432/tcp   db1
+```
+**Access the APIs**
+```url
+http://127.0.0.1:8000/api/
+```
+**Access the API test report (html)**
+```url
+http://127.0.0.1:3001/
+```
+**Access the UI (not complete)**
+```
+http://127.0.0.1/
+```
+**Access the UI test report**
+```
+//WIP
 ```
 ### 1.3. Structure
 Structure is build with a `bottom-up` approch where modules are built one by one. All modules holds there required packages/modules inside it. 
 #### 1.3.1. Database (`postgres`)
-A simple `XXX` base image is being used with out any build step (`Dockerfile` is there; not in use). Currently the application uses the default `postgres@postgres` table schema and create model table there. This is entry point of our application which kicks off first.
+A minimal base image is being used without any build step (`Dockerfile` is there; not in use). Currently the application uses the default `postgres@postgres` table schema and create model table there. This is entry point of our application which kicks off first.
 ```sh
+image: library/postgres
 port in use: 5432
 ````
+
 #### 1.3.2. RESTful API (`flask`)
 `flask` is minimal web framework build with `python`. It offers minimal setup to kick off a backend service. An mdoel `user` being served which is binding with a orm `SQLAlchemy`. Currently it points to `postgres` db hosted in the container. 
 **Following are the endpoints of user service**
@@ -62,22 +82,31 @@ To keep things minimal currently no such `composite key` for this `user` model. 
     GET /api/user/Juntin_S_Weber
 ```
 ```yml
+base image: python:3.7
 port in use: 8000
 ````
 #### 1.3.3. Static (`pure css-html-js`)
-Lorem ipsum dolor sit amet consectetur adipiscing elit, semper nam justo sapien cum duis penatibus, egestas cubilia senectus parturient pellentesque praesent. Quisque leo fusce aptent maecenas diam pulvinar litora, natoque montes vulputate sem cursus iaculis, tristique habitant ut ullamcorper taciti pharetra. Accumsan feugiat praesent class bibendum curae curabitur morbi lacinia convallis montes auctor velit, volutpat integer et gravida odio eget turpis tempor per fames vestibulum.
+Pure css, js and html. Period.
 ```yml
 port in use: 8000
 ````
 #### 1.3.4. API Testing (`newman-postman collection`)
-Lorem ipsum dolor sit amet consectetur adipiscing elit, semper nam justo sapien cum duis penatibus, egestas cubilia senectus parturient pellentesque praesent. Quisque leo fusce aptent maecenas diam pulvinar litora, natoque montes vulputate sem cursus iaculis, tristique habitant ut ullamcorper taciti pharetra. Accumsan feugiat praesent class bibendum curae curabitur morbi lacinia convallis montes auctor velit, volutpat integer et gravida odio eget turpis tempor per fames vestibulum.
-```
-port in use: xxx
+* Test cases are prepared in `postman` tool and executed there. 
+* Later comlpeted `collection` exported and being executed in node module `newman`. 
+* With a dependency node package `newman` generate html report and stores locally. Serving this file with python.
+* API resource `user` tested for all `CRUD` access.
+```yml
+base image: library/node:alpine
+port in use: 3001
 ````
 #### 1.3.5. UI Testing (`python-selenium-behave`)
-Lorem ipsum dolor sit amet consectetur adipiscing elit, semper nam justo sapien cum duis penatibus, egestas cubilia senectus parturient pellentesque praesent. Quisque leo fusce aptent maecenas diam pulvinar litora, natoque montes vulputate sem cursus iaculis, tristique habitant ut ullamcorper taciti pharetra. Accumsan feugiat praesent class bibendum curae curabitur morbi lacinia convallis montes auctor velit, volutpat integer et gravida odio eget turpis tempor per fames vestibulum.
+Selenium testing with BDD test framework `behave` written in `python`. Test cases and step definations are separated. `css locator` is being used and they are defined inside step defination files. `environment.py` sets up the driver instance with connecting it to `grid` or `hub` running inside docker container. Test scripts will be injected inside the contianer and will run locally. 
+* Going forward, `page object model` can be imposed where step definations will delegate accessing DOM elements to `page classes`.
+```yml
+port in use: 4444
+````
 ### 1.4. Flow
-Lorem ipsum dolor sit amet consectetur adipiscing elit, semper nam justo sapien cum duis penatibus, egestas cubilia senectus parturient pellentesque praesent. Quisque leo fusce aptent maecenas diam pulvinar litora, natoque montes vulputate sem cursus iaculis, tristique habitant ut ullamcorper taciti pharetra. Accumsan feugiat praesent class bibendum curae curabitur morbi lacinia convallis montes auctor velit, volutpat integer et gravida odio eget turpis tempor per fames vestibulum.
+> Stub
 ### 1.5. Complete `Docker-compose.yml`
 ```yml
 version: '3.6'
