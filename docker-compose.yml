@@ -14,13 +14,13 @@ services:
     expose:
       - "5432"
 
-  flask:
-    container_name: flask
+  fe:
+    container_name: fe
     restart: always
-    build: './flask'
+    build: './fe'
     command: 'python ./app.py'
     volumes:
-      - ./flask:/code
+      - ./fe:/code
     ports:
       - 8000:8000
     environment:
@@ -32,32 +32,32 @@ services:
     depends_on:
       - db1
 
-  api-tests:
-    container_name: api-tests
-    build: './api-tests'
+  be-tests:
+    container_name: be-tests
+    build: './be-tests'
     command: ./run.sh
     volumes:
-      - ./api-tests:/usr/src/app
+      - ./be-tests:/usr/src/app
     ports:
       - 3001:3001
     expose:
       - 8000
     links:
-      - flask
+      - fe
     depends_on:
       - db1
-      - flask
+      - fe
 
   selenium:
     container_name: selenium
-    build: './ui-tests'
+    build: './fe-tests'
     command: 'behave -f allure_behave.formatter:AllureFormatter -o . ./features'
     command: 'SimpleHTTPServer 3002 --bind 127.0.0.1'
     volumes:
-      - ./ui-tests:/code
+      - ./fe-tests:/code
     ports:
       - 4444:4444
       - 3002:3002
     depends_on:
-      - flask
+      - fe
       - db1

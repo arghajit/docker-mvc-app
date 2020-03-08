@@ -29,7 +29,7 @@ In few seconds you start seeing all of the containers being up and running.
 ```sh
 Arghajit@mac$ docker ps
 CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                    NAMES
-a0c5655bf9ad        docker-mvc-app_api-tests   "./run.sh"               10 seconds ago      Up 10 seconds       0.0.0.0:3001->3001/tcp   api-tests
+a0c5655bf9ad        docker-mvc-app_be-tests   "./run.sh"               10 seconds ago      Up 10 seconds       0.0.0.0:3001->3001/tcp   be-tests
 cceec3f80d66        docker-mvc-app_flask       "python ./app.py"        12 seconds ago      Up 8 seconds        0.0.0.0:8000->8000/tcp   flask
 c1e5b0b44bb7        postgres:10.1-alpine       "docker-entrypoint.s…"   13 seconds ago      Up 13 seconds       0.0.0.0:5432->5432/tcp   db1
 ```
@@ -145,12 +145,12 @@ services:
     depends_on:
       - db1
 
-  api-tests:
-    container_name: api-tests
-    build: './api-tests'
+  be-tests:
+    container_name: be-tests
+    build: './be-tests'
     command: ./run.sh
     volumes:
-      - ./api-tests:/usr/src/app
+      - ./be-tests:/usr/src/app
     ports:
       - 3001:3001
     depends_on:
@@ -159,12 +159,12 @@ services:
 
   selenium:
     container_name: selenium
-    build: './ui-tests'
+    build: './fe-tests'
     # command: 'behave'
     command: 'behave -f allure_behave.formatter:AllureFormatter -o . ./features'
     command: 'python -m SimpleHTTPServer 3002 --bind 127.0.0.1'
     volumes:
-      - ./ui-tests:/code
+      - ./fe-tests:/code
     ports:
       - 4444:4444
       - 3002:3002
@@ -177,7 +177,7 @@ services:
 ```sh
   .
   ├── README.md
-  ├── api-tests
+  ├── be-tests
   │   ├── Dockerfile
   │   ├── flask.postman_collection.json
   │   ├── index.html
@@ -210,7 +210,7 @@ services:
   │   │       └── index.js
   │   └── requirements.txt
   ├── structure
-  └── ui-tests
+  └── fe-tests
       ├── Dockerfile
       ├── environment.py
       ├── features

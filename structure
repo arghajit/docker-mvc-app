@@ -1,6 +1,6 @@
 [01;34m.[00m
 (0tqq (BREADME.md
-(0tqq (B[01;34mapi-tests[00m
+(0tqq (B[01;34mbe-tests[00m
 (0x   tqq (BDockerfile
 (0x   tqq (Bflask.postman_collection.json
 (0x   tqq (Bindex.html
@@ -51,7 +51,7 @@
 (0x   x   mqq (Bstyle.scss
 (0x   mqq (Bserver.js
 (0tqq (Bstructure
-(0mqq (B[01;34mui-tests[00m
+(0mqq (B[01;34mfe-tests[00m
 (0    tqq (BDockerfile
 (0    tqq (Benvironment.py
 (0    tqq (B[01;34mfeatures[00m
